@@ -1,10 +1,12 @@
+#!/usr/bin/env python
+# Python 3
+
 from tkinter import *
 from tkinter import ttk
 from Entry import ConstrainedEntry
 import tkinter.messagebox
 
-
-AlarmCode = "1234"
+AlarmCode = "2222"
 
 def one():
 	code_entry.insert(END,"1")
@@ -29,9 +31,10 @@ def zero():
 def clear():
 	code_entry.delete(0, END)
 def delete():
-	code_entry.delete(1)
-		
+	start = len(code_entry.get()) -1
+	code_entry.delete(start, END)
 	
+
 def getCode():
 	global userEntered
 	userEntered = (code_entry.get())
@@ -42,7 +45,11 @@ def getCode():
 		tkinter.messagebox.showwarning("Alarm Code", "Code must be four digits long")
 	else:
 		tkinter.messagebox.showwarning("Alarm Code", "Code incorrect,please try again")
-    
+def getOption():
+	global sensorChoice
+	sensorChoice =(sensor_option.get())
+	print(sensorChoice)
+
 root = Tk()
 root.title("Alarm Interface")
 mainframe = ttk.Frame(root, padding="3 3 12 12")
@@ -51,6 +58,8 @@ mainframe.columnconfigure(0, weight=1)
 mainframe.rowconfigure(0, weight=1)
 
 code_entered = IntVar()
+sensoroptions = ("Both", "Front", "Back")
+sensor_choice = StringVar()
 
 #Add Entry field for  code data, calls class Constrained Entry for validation
 code_entry= ConstrainedEntry(mainframe, width=7, textvariable=code_entered)
@@ -70,16 +79,15 @@ ttk.Button(mainframe, text="9", command=nine).grid(column=3, row=3, sticky=NW)
 ttk.Button(mainframe, text="Clear", command = clear).grid(column=1, row=4, sticky=NW)
 ttk.Button(mainframe, text="0", command=zero).grid(column=2, row=4, sticky=NW)
 ttk.Button(mainframe, text="Delete", command=delete).grid(column=3, row=4, sticky=NW)
-ttk.Button(mainframe, text="Delete", command=delete).grid(column=4, row=4, sticky=NW)
 
-ttk.Button(mainframe, text="Disable Alarm", command =getCode).grid(column=5, row=4, sticky=E)
+ttk.Button(mainframe, text="Disable Alarm", command =getCode).grid(column=5, row=4, sticky=SE)
 ttk.Button(mainframe, text="Enable Alarm").grid(column=5, row=5, sticky=SE)
 
 ttk.Label(mainframe, text="Alarm Code:").grid(column=1, row=5, sticky=W)
-ttk.Label(mainframe, text="    ").grid(column=4, row=5, sticky=W)
+ttk.Label(mainframe, text="Sensor Option:").grid(column =4, row =1, sticky=NE)
 
-
-
+sensor_option =Spinbox(mainframe, values=(sensoroptions), textvariable=sensor_choice, command =getOption)
+sensor_option.grid(column =5, row =1, sticky=(N,E))
 
 for child in mainframe.winfo_children(): child.grid_configure(padx=5, pady=5)
 

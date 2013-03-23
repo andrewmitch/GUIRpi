@@ -1,4 +1,5 @@
-
+#!/usr/bin/env python
+# Python 3
 from tkinter import ttk
 
 class ConstrainedEntry(ttk.Entry):
