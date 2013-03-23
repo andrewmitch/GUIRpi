@@ -29,11 +29,9 @@ def zero():
 def clear():
 	code_entry.delete(0, END)
 def delete():
-	if len(code_entry == 1):
-		code_entry.delete(1)
-	elif len(code_entry == 2):
-		code_entry.delete(2)
-
+	code_entry.delete(1)
+		
+	
 def getCode():
 	global userEntered
 	userEntered = (code_entry.get())
@@ -72,11 +70,13 @@ ttk.Button(mainframe, text="9", command=nine).grid(column=3, row=3, sticky=NW)
 ttk.Button(mainframe, text="Clear", command = clear).grid(column=1, row=4, sticky=NW)
 ttk.Button(mainframe, text="0", command=zero).grid(column=2, row=4, sticky=NW)
 ttk.Button(mainframe, text="Delete", command=delete).grid(column=3, row=4, sticky=NW)
+ttk.Button(mainframe, text="Delete", command=delete).grid(column=4, row=4, sticky=NW)
 
 ttk.Button(mainframe, text="Disable Alarm", command =getCode).grid(column=5, row=4, sticky=E)
 ttk.Button(mainframe, text="Enable Alarm").grid(column=5, row=5, sticky=SE)
 
 ttk.Label(mainframe, text="Alarm Code:").grid(column=1, row=5, sticky=W)
+ttk.Label(mainframe, text="    ").grid(column=4, row=5, sticky=W)
 
 
 
