@@ -65,10 +65,22 @@ def getOption(sensor_option):
 
 
 def alarmActive(root,period=0):
-        if (period <30) and (AlarmStatus is "On"):
+        global Flash
+        while (period <30) and (AlarmStatus is "On"):
+                if (Flash is True):
+                        print("Off")
+                        Flash = False
+                        break
+                elif (Flash is False):
+                        print("On")
+                        Flash = True
+                        break
+                else:
+                        break
+        if (period <30) and (AlarmStatus == "On"):
                 period +=1
                 print(period)
-                root.after(1000, lambda: alarmActive(root, period))
+                root.after(500, lambda: alarmActive(root, period))
         elif (AlarmStatus == "Off"):
                 print("Alarm has been disabled before activation")
         else:
