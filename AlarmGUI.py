@@ -7,7 +7,7 @@ from Entry import ConstrainedEntry
 import tkinter.messagebox
 import functions
 import Alarm
-
+import time
 
 AlarmCode = "2222"
 
@@ -41,16 +41,18 @@ ttk.Button(mainframe, text="Clear", command=lambda: functions.clear(code_entry))
 ttk.Button(mainframe, text="0", command=lambda: functions.zero(code_entry)).grid(column=2, row=4, sticky=NW)
 ttk.Button(mainframe, text="Delete", command=lambda: functions.delete(code_entry)).grid(column=3, row=4, sticky=NW)
 
-ttk.Button(mainframe, width=12, text="Disable Alarm", command =lambda: Alarm.getCode(code_entry)).grid(column=5, row=4, sticky=SE)
-ttk.Button(mainframe, width=12,text="Enable Alarm", command =lambda: Alarm.getCode(code_entry)).grid(column=5, row=5, sticky=SE)
+ttk.Button(mainframe, width=12, text="Disable Alarm", command =lambda: Alarm.disableCode(code_entry)).grid(column=5, row=4, sticky=SE)
+ttk.Button(mainframe, width=12,text="Enable Alarm", command =lambda: Alarm.enableCode(code_entry, sensor_option, root)).grid(column=5, row=5, sticky=SE)
 
 ttk.Label(mainframe, text="Alarm Code:").grid(column=1, row=5, sticky=W)
 ttk.Label(mainframe, text="Sensor Option:").grid(column =4, row =1, sticky=NE)
 
-sensor_option=Spinbox(mainframe, values=(sensoroptions), textvariable=sensor_choice,command =lambda: Alarm.getOption(sensor_option))
+sensor_option=Spinbox(mainframe, values=(sensoroptions), textvariable=sensor_choice)
 sensor_option.grid(column =5, row =1, sticky=(N,E))
 
 for child in mainframe.winfo_children(): child.grid_configure(padx=5, pady=5)
 
+
 root.mainloop()
+
 
