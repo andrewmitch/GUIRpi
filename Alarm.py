@@ -1,14 +1,14 @@
 from tkinter import *
 from tkinter import ttk
 import tkinter.messagebox
-#import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 import time
 
 
-#GPIO.cleanup()
-#GPIO.setmode(GPIO.BOARD)
-#GPIO.setup(11, GPIO.OUT)
-#GPIO.setup(15, GPIO.OUT)
+GPIO.cleanup()
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(11, GPIO.OUT)
+GPIO.setup(15, GPIO.OUT)
 #GPIO.output(15, False)
 #GPIO.output(11, False)
 
@@ -18,6 +18,12 @@ AlarmCode = "2222"
 MotionDetected = False
 Flash = True
 
+
+
+def redLED(pin, mode):
+        GPIO.output(pin, mode)
+def greenLED(pin, mode):
+        GPIO.output(pin, mode)
 def enableCode(code_entry, sensor_option, root):
         global sensorChoice
         global AlarmStatus
@@ -32,7 +38,6 @@ def enableCode(code_entry, sensor_option, root):
                 sensorChoice = (sensor_option.get())
                 print(sensorChoice)
                 alarmActive(root)
-                #flashLED(root,11)
         elif (userEntered == AlarmCode) and (AlarmStatus == "On"):
                 tkinter.messagebox.showinfo("Alarm Code","Alarm is already activated")
         elif len(userEntered) <4:
@@ -49,8 +54,7 @@ def disableCode(code_entry):
         if (userEntered == AlarmCode) and (AlarmStatus == "On"):
                 tkinter.messagebox.showinfo("Alarm Code","Code Aceepted, Disabling alarm")
                 AlarmStatus = "Off"
-                alarmDisable()
-                
+                alarmDisable(11, TRUE)
         elif (userEntered == AlarmCode) and (AlarmStatus == "Off"):
                 tkinter.messagebox.showwarning("Alarm Code", "Unable to disable alarm. Alarm is not enabled.")
         elif len(userEntered) <4:
@@ -65,14 +69,15 @@ def getOption(sensor_option):
 
 
 def alarmActive(root,period=0):
+        redLED(11, FALSE)
         global Flash
         while (period <30) and (AlarmStatus is "On"):
                 if (Flash is True):
-                        print("Off")
+                        greenLED(15, FALSE)
                         Flash = False
                         break
                 elif (Flash is False):
-                        print("On")
+                        greenLED(15, TRUE)
                         Flash = True
                         break
                 else:
@@ -83,26 +88,30 @@ def alarmActive(root,period=0):
                 root.after(500, lambda: alarmActive(root, period))
         elif (AlarmStatus == "Off"):
                 print("Alarm has been disabled before activation")
+                
         else:
-                print("Light on")
+                #cleanGPIO()
+                greenLED(15, TRUE)
                 print("Alarm now active")
-                sensorListen(root)
+                #sensorListen(root)
                 
                
-def alarmDisable():
+def alarmDisable(pin, mode):
         print ("Alarm Disabled")
+        greenLED(15, FALSE)
+        redLED(pin, mode)
 
-def sensorListen(root):
-                if (sensorChoice == "Both"):
-                        MotionDetected = True
-                        print("Motion Detected")
-                        root.after(1000, lambda: sensorListen(root))
-                elif (sensorChoice == "Front"):
-                        MotionDetected = True
-                elif (sensorChoice == "Back"):
-                        MotionDetected = True
-                else:
-                        print("Error alarm")
+##def sensorListen(root):
+##                if (sensorChoice == "Both"):
+##                        MotionDetected = True
+##                        print("Motion Detected")
+##                        root.after(1000, lambda: sensorListen(root))
+##                elif (sensorChoice == "Front"):
+##                        MotionDetected = True
+##                elif (sensorChoice == "Back"):
+##                        MotionDetected = True
+##                else:
+##                        print("Error alarm")
                         
                         
         
