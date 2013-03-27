@@ -18,7 +18,15 @@ AlarmCode = "2222"
 MotionDetected = False
 Flash = True
 
-
+def flash(root):
+        if AlarmStatus == 'Off':
+                GPIO.output(15, TRUE)
+                state = 'On'
+                root.after(100, flash)
+        else :
+                GPIO.output(11, False)
+                state = 'Off'
+                root.after(900, flash)
 
 def redLED(pin, mode):
         GPIO.output(pin, mode)
@@ -52,7 +60,7 @@ def disableCode(code_entry):
         print(userEntered)
         code_entry.delete(0, END)
         if (userEntered == AlarmCode) and (AlarmStatus == "On"):
-                tkinter.messagebox.showinfo("Alarm Code","Code Aceepted, Disabling alarm")
+                tkinter.messagebox.showinfo("Alarm Code","Code Accepted, Disabling alarm")
                 AlarmStatus = "Off"
                 alarmDisable(11, TRUE)
         elif (userEntered == AlarmCode) and (AlarmStatus == "Off"):
@@ -69,8 +77,8 @@ def getOption(sensor_option):
 
 
 def alarmActive(root,period=0):
-        redLED(11, FALSE)
         global Flash
+        redLED(11, FALSE)
         while (period <30) and (AlarmStatus is "On"):
                 if (Flash is True):
                         greenLED(15, FALSE)
@@ -87,12 +95,14 @@ def alarmActive(root,period=0):
                 print(period)
                 root.after(500, lambda: alarmActive(root, period))
         elif (AlarmStatus == "Off"):
-                print("Alarm has been disabled before activation")
+                print("Alarm disabled before activation")
+                alarmDisable(11, TRUE)
                 
         else:
                 #cleanGPIO()
                 greenLED(15, TRUE)
                 print("Alarm now active")
+                alarmLive(root)
                 #sensorListen(root)
                 
                
@@ -100,6 +110,23 @@ def alarmDisable(pin, mode):
         print ("Alarm Disabled")
         greenLED(15, FALSE)
         redLED(pin, mode)
+
+def alarmLive(root):
+        while (AlarmStatus is 'On'):
+                if (sensorChoice == "Both"):
+                        print("Monitoring both sensors")
+                        break
+                else:
+                        break
+                
+        if (AlarmStatus == 'On'):
+                root.after(1000, lambda: alarmLive(root))
+        elif(AlarmStatus == 'Off'):
+                alarmDisable(11, TRUE)
+        
+        
+        
+        
 
 ##def sensorListen(root):
 ##                if (sensorChoice == "Both"):
