@@ -2,6 +2,7 @@
 # Python 3
 
 from tkinter import ttk
+import re
 
 class ConstrainedEntry(ttk.Entry):
     def __init__(self, *args, **kwargs):
@@ -14,14 +15,9 @@ class ConstrainedEntry(ttk.Entry):
         self.bell()
 
     def on_validate(self, new_value):
-        try:
-            if new_value.strip() == "": return True
-            value = int(new_value)
-            if value < 0 or value > 9999:
-                self.disallow()
-                return False
-        except ValueError:
+        value = re.match(r'^(\d{1,4})?$', new_value)
+        if value is None:
             self.disallow()
             return False
-
-        return True
+        else:
+            return True
