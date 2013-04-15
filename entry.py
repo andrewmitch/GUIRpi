@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # Python 3
 
+# Class used to validate code being entered into entry widget, to ensure the value entered is a four digit interger, will not allow any other data type.
 from tkinter import ttk
 import re
 
