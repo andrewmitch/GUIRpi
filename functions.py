@@ -3,6 +3,8 @@
 from tkinter import *
 from tkinter import ttk
 
+#Called by button clicks from the UI, will print numbers into entry widget, delete or clear contents too.
+
 def one(code_entry):
 	code_entry.insert(END,"1")
 def two(code_entry):
