@@ -11,6 +11,7 @@ import time
 
 AlarmCode = "2222"
 
+# Create UI, apply title, padding and layout to the created frame
 root = Tk()
 root.title("Alarm Interface")
 mainframe = ttk.Frame(root, padding="3 3 12 12")
@@ -44,15 +45,17 @@ ttk.Button(mainframe, text="Delete", command=lambda: functions.delete(code_entry
 ttk.Button(mainframe, width=12, text="Disable Alarm", command =lambda: alarm.disableCode(code_entry)).grid(column=5, row=4, sticky=SE)
 ttk.Button(mainframe, width=12,text="Enable Alarm", command =lambda: alarm.enableCode(code_entry, sensor_option, root)).grid(column=5, row=5, sticky=SE)
 
+# Add labels to UI and specifiy location
 ttk.Label(mainframe, text="Alarm Code:").grid(column=1, row=5, sticky=W)
 ttk.Label(mainframe, text="Sensor Option:").grid(column =4, row =1, sticky=NE)
 
+#create a spinbox to hold the values for the sensor options valid within the system
 sensor_option=Spinbox(mainframe, values=(sensoroptions), textvariable=sensor_choice)
 sensor_option.grid(column =5, row =1, sticky=(N,E))
 
 for child in mainframe.winfo_children(): child.grid_configure(padx=5, pady=5)
 
-
+# Create UI and widgets 
 root.mainloop()
 
 
